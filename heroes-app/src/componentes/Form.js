@@ -1,5 +1,8 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import { login } from '../servies/alkemy_api'
+
+const API_URL = 'http://challenge-react.alkemy.org/';
 
 const validateFields = values => {
     const errors = {};
@@ -10,8 +13,6 @@ const validateFields = values => {
     }
     if (!values.password) {
         errors.password = 'Required';
-    } else if (values.password.length < 8) {
-        errors.password = 'To Short Password';
     }
     // Agregar control de comillas y de inyeccion sql. 
     return errors;
@@ -28,8 +29,10 @@ const SignupForm = () => {
         validate: validateFields,
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2));
-            // post con email y password. Despues insertar jwt y renderizar la barra.
-
+            login(values.email, values.password, API_URL)
+                .then(token => {
+                    console.log(token);
+                });
         },
     });
     return (
