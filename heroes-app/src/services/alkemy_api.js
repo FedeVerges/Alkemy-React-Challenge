@@ -17,3 +17,11 @@ export async function login(email,password,URL) {
             return "";
     })
 }
+
+export async function getHeroes() {
+    
+}
+
+// export function logout() {
+    
+// }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { login } from '../servies/alkemy_api'
+import { login } from '../services/alkemy_api'
 
 const API_URL = 'http://challenge-react.alkemy.org/';
 
@@ -19,8 +19,6 @@ const validateFields = values => {
 };
 
 const SignupForm = () => {
-    // Pass the useFormik() hook initial form values and a submit function that will
-    // be called when the form is submitted
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -31,6 +29,9 @@ const SignupForm = () => {
             alert(JSON.stringify(values, null, 2));
             login(values.email, values.password, API_URL)
                 .then(token => {
+                    if (token !== "" && token !== null) {
+                        localStorage.setItem("SessionId", token)
+                    }
                     console.log(token);
                 });
         },

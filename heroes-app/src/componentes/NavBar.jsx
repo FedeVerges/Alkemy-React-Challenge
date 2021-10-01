@@ -1,37 +1,23 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-// Utilizar logica para determinar si el usuario posee el token de sesion en el localstorage, de lo contrario redirigir al login.
-
-
+import React from "react";
+import { Navbar, Container, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 const NavigationBar = () => {
-    return (
-        <div>
-            <nav className="nav-bar">
-                <div className="container-nav-bar">
-                    <div className="container-nav-bar-logo">
-                        <Link className="nav-bar-logo" to='/'>
-                            Hero App
-                        </Link>
-                    </div>
-                <div>
-                    <ul>
-                        <li>
-
-                            <Link className="nav-bar-link" to='/'>Home</Link>
-                        </li>
-                        <li>
-
-                            <Link className="nav-bar-link" to='/about'>About</Link>
-                        </li>
-                    </ul>
-                    </div>
-                    </div>
-
-
-            </nav>
-        </div>
-    );
+  return (
+    <div>
+      <Navbar sticky="top" className="nav-bar ">
+        <Container fluid className="container-nav-bar">
+          <Navbar.Brand className="nav-bar-logo" href="/">
+            Hero App
+          </Navbar.Brand>
+          <Nav>
+            <Nav.Link className="nav-bar-link" href="/equipo">Equipo</Nav.Link>
+            <Nav.Link href="/about">About</Nav.Link>
+          </Nav>
+        </Container>
+        
+      </Navbar>
+    </div>
+  );
 };
 
 export default NavigationBar;
