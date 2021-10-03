@@ -14,7 +14,6 @@ const validateFields = values => {
     if (!values.password) {
         errors.password = 'Required';
     }
-    // Agregar control de comillas y de inyeccion sql. 
     return errors;
 };
 

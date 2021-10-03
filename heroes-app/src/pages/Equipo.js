@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Heroe from "../componentes/Heroe.jsx";
 import Detail from "../componentes/Detail.jsx";
+import SearchHero from "../componentes/SearchHeroes.jsx";
 import { v4 as uuid } from "uuid";
-import {
-  Card,
-  Col,
-  Row,
-  Container,
-  Badge,
-  ListGroup,
-  Modal,
-} from "react-bootstrap";
+import { Card, Col, Row, Container, Badge, ListGroup } from "react-bootstrap";
 
 // Posee una lista de 6 heores, 3 buenos y 3 malos.
 const heroesPerTeam = 6;
@@ -34,13 +27,22 @@ const initialList = () => {
   return list;
 };
 const Equipo = () => {
-  const [team, setTeam] = useState(initialList);
+  const [team, setTeam] = useState([]);
   const [totalPowerstats, setTotal] = useState({});
 
   // Modal State.
-  const [modalShow, setModalShow] = useState(false);
+  const [detailShow, setDetailShow] = useState(false);
+  const [detailData, setDetailData] = useState();
 
-  const handleUpdateHero = (data, index) => {
+  const handleCloseModal = () => {
+    setDetailShow(false);
+  };
+  const handleOpenModal = (index) => {
+    setDetailData(team[index]);
+    setDetailShow(true);
+  };
+
+  const handleAddHero = (data) => {
     const hero = {
       id: data.id,
       name: data.name,
@@ -52,16 +54,29 @@ const Equipo = () => {
       image: data.image,
     };
     if (team.length < 7) {
-      team[index] = hero;
-      let newTeam = [...team];
+      let newTeam = [...team, hero];
       setTeam(newTeam);
     }
   };
 
-  const handleCloseModal = () => {setModalShow(false)}
-  const handleOpenModal = () => {
-    setModalShow(true);
-  };
+  const handleDeleteHero = (index) => {
+    const nullHero = {
+      id: null,
+      name: null,
+      powerstats: {},
+      bibliography: {},
+      alignment: null,
+      appearance: null,
+      work: {},
+      connections: {},
+      image: {
+        url: null,
+      },
+    };
+    team[index] = nullHero;
+    let newTeam = [...team];
+    setTeam(newTeam);
+  }
 
   useEffect(() => {
     const calculatePowerStats = () => {
@@ -76,7 +91,6 @@ const Equipo = () => {
           });
         }
       });
-      console.log(newTotalPowerstats);
       setTotal(newTotalPowerstats);
     };
     calculatePowerStats();
@@ -84,27 +98,8 @@ const Equipo = () => {
 
   return (
     <Container className="container-equipo" fluid>
-      <Row xs={1} md={1} lg={2} xl={2}>
-        <Col xs={12} md={12} lg={8} xl={8}>
-          <Row className="justify-content-center" xs={2} md={2} lg={3} xl={3}>
-            {team.length > 0 ? (
-              team.map((hero, index) => {
-                return (
-                  <Heroe
-                    key={uuid()}
-                    listIndex={index}
-                    hero={hero}
-                    setHero={handleUpdateHero}
-                    onClickDetail={handleOpenModal}
-                  />
-                );
-              })
-            ) : (
-              <Col></Col>
-            )}
-          </Row>
-        </Col>
-        <Col lg={4} xl={4}>
+      <Row xs={1} md={2} lg={2} xl={2}>
+        <Col md={4} lg={4} xl={4}>
           <div>
             <Card>
               <Card.Header>
@@ -130,9 +125,40 @@ const Equipo = () => {
               </Card.Body>
             </Card>
           </div>
+          <div className="my-2">
+            <SearchHero
+              addHero={handleAddHero}
+              // heroeDiscarted={}
+              teamFull={team.length >= heroesPerTeam}
+            ></SearchHero>
+          </div>
+        </Col>
+        <Col xs={12} md={8} lg={8} xl={8}>
+          <Row className="justify-content-center" xs={2} md={2} lg={3} xl={3}>
+            {team.length > 0 ? (
+              team.map((hero, index) => {
+                return (
+                  <Heroe
+                    key={uuid()}
+                    listIndex={index}
+                    hero={hero}
+                    addHero={handleAddHero}
+                    deleteHero={handleDeleteHero}
+                    onClickDetail={handleOpenModal}
+                  />
+                );
+              })
+            ) : (
+              <Col></Col>
+            )}
+          </Row>
         </Col>
       </Row>
-      <Detail show={modalShow} onHide={handleCloseModal} ></Detail>
+      <Detail
+        show={detailShow}
+        onHide={handleCloseModal}
+        hero={detailData}
+      ></Detail>
     </Container>
   );
 };

@@ -3,32 +3,22 @@ import React from "react";
 import { v4 as uuid } from "uuid";
 import { Card, Button, Row, Col, Container, Badge } from "react-bootstrap";
 
-const Heroe = ({ listIndex, hero, setHero, onClickDetail }) => {
+const Heroe = ({ listIndex, hero, addHero,deleteHero, onClickDetail }) => {
   const { id, name, powerstats, alignment, image } = hero;
   const handleDeleteHero = () => {
-    const nullHero = {
-      id: null,
-      name: null,
-      powerstats: {},
-      bibliography: {},
-      alignment: null,
-      appearance: null,
-      work: {},
-      connections: {},
-      image: {
-        url: null,
-      },
-    };
-    setHero(nullHero, listIndex);
+    deleteHero(listIndex);
   };
-
-  const handleSetHero = () => {
+  const handleAddHero = () => {
     const newHero = {
       id: 70,
       name: "Batman",
       powerstats: {
         intelligence: "100",
         strength: "26",
+        intelligence1: "100",
+        strength1: "26",
+        intelligence2: "100",
+        strength2: "26",
       },
       alignment: "good",
       appearance: {
@@ -43,32 +33,14 @@ const Heroe = ({ listIndex, hero, setHero, onClickDetail }) => {
         url: "https://www.superherodb.com/pictures2/portraits/10/100/639.jpg",
       },
     };
-    setHero(newHero, listIndex);
+    addHero(newHero, listIndex);
   };
 
   const handleShowDetail = () => {
-    onClickDetail();
+    onClickDetail(listIndex);
   };
 
-  if (id === -1 || id === null) {
-    return (
-      <div className="py-2">
-        <Card>
-          <Card.Body className="p-0">
-            <div className="p-0">No hay heroe</div>
-            {/* //Todo: Agregar imagen nula */}
-            <Container>
-              <Row className="justify-content-center" sm="auto" xl="auto">
-                <Button variant="outline-success" onClick={handleSetHero}>
-                  Agregar
-                </Button>
-              </Row>
-            </Container>
-          </Card.Body>
-        </Card>
-      </div>
-    );
-  } else {
+  if (id !== -1 && id !== null) {
     return (
       <div className="py-2">
         <Card bg={alignment === "good" ? "primary" : "danger"}>
@@ -86,9 +58,8 @@ const Heroe = ({ listIndex, hero, setHero, onClickDetail }) => {
             ></Card.Img>
             <Card bd="light">
               <Card.Body className="p-1">
-                <Card.Text>Powerstats</Card.Text>
-                <Row
-                  className="justify-content-center"
+                <Card.Text className="text-center">Powerstats</Card.Text>
+                <Row className="justify-content-center"
                   xs={2}
                   md={2}
                   lg={2}
@@ -97,10 +68,9 @@ const Heroe = ({ listIndex, hero, setHero, onClickDetail }) => {
                 >
                   {Object.keys(powerstats).map((value) => {
                     return (
-                      <Col key={uuid()} className="d-grid ">
+                      <Col key={uuid()} className="d-grid">
                         <Button size="sm" variant="outline-primary" disabled>
                           {value}
-                          <br></br>
                           <Badge style={{ backgroundColor: "#0d6efd" }}>
                             {powerstats[value]}
                           </Badge>
@@ -112,10 +82,7 @@ const Heroe = ({ listIndex, hero, setHero, onClickDetail }) => {
               </Card.Body>
               <Card.Footer>
                 <Row sm="auto" md="auto" lg="auto" xl="auto">
-                  <Button variant="success" onClick={() => alert("holis")}>
-                    Cambiar
-                  </Button>
-                  <Button variant="secondary" onClick={handleDeleteHero}>
+                  <Button size='sm' variant="secondary" onClick={handleDeleteHero}>
                     Eliminar
                   </Button>
                 </Row>
@@ -126,6 +93,8 @@ const Heroe = ({ listIndex, hero, setHero, onClickDetail }) => {
         </Card>
       </div>
     );
+  } else {
+    return null;
   }
 };
 export default Heroe;
