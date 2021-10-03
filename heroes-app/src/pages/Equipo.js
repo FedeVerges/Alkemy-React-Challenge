@@ -4,6 +4,8 @@ import Detail from "../componentes/Detail.jsx";
 import SearchHero from "../componentes/SearchHeroes.jsx";
 import { v4 as uuid } from "uuid";
 import { Card, Col, Row, Container, Badge, ListGroup } from "react-bootstrap";
+import useUser from "../hooks/useUser.js";
+import { BrowserRouter as Router, Route,Redirect } from "react-router-dom";
 
 // Posee una lista de 6 heores, 3 buenos y 3 malos.
 const heroesPerTeam = 6;
@@ -29,6 +31,7 @@ const initialList = () => {
 const Equipo = () => {
   const [team, setTeam] = useState([]);
   const [totalPowerstats, setTotal] = useState({});
+  const { isLogged } = useUser();
 
   // Modal State.
   const [detailShow, setDetailShow] = useState(false);
@@ -76,7 +79,7 @@ const Equipo = () => {
     team[index] = nullHero;
     let newTeam = [...team];
     setTeam(newTeam);
-  }
+  };
 
   useEffect(() => {
     const calculatePowerStats = () => {
@@ -96,70 +99,76 @@ const Equipo = () => {
     calculatePowerStats();
   }, [team]);
 
-  return (
-    <Container className="container-equipo" fluid>
-      <Row xs={1} md={2} lg={2} xl={2}>
-        <Col md={4} lg={4} xl={4}>
-          <div>
-            <Card>
-              <Card.Header>
-                <h2 className="text-center">Powerstats</h2>
-              </Card.Header>
-              <Card.Body>
-                <ListGroup>
-                  {Object.keys(totalPowerstats).map((powerstat) => {
-                    return (
-                      <ListGroup.Item
-                        key={uuid()}
-                        variant="secondary"
-                        className="m-2"
-                      >
-                        {powerstat}{" "}
-                        <Badge style={{ backgroundColor: "#0d6efd" }}>
-                          {totalPowerstats[powerstat]}
-                        </Badge>
-                      </ListGroup.Item>
-                    );
-                  })}
-                </ListGroup>
-              </Card.Body>
-            </Card>
-          </div>
-          <div className="my-2">
-            <SearchHero
-              addHero={handleAddHero}
-              // heroeDiscarted={}
-              teamFull={team.length >= heroesPerTeam}
-            ></SearchHero>
-          </div>
-        </Col>
-        <Col xs={12} md={8} lg={8} xl={8}>
-          <Row className="justify-content-center" xs={2} md={2} lg={3} xl={3}>
-            {team.length > 0 ? (
-              team.map((hero, index) => {
-                return (
-                  <Heroe
-                    key={uuid()}
-                    listIndex={index}
-                    hero={hero}
-                    addHero={handleAddHero}
-                    deleteHero={handleDeleteHero}
-                    onClickDetail={handleOpenModal}
-                  />
-                );
-              })
-            ) : (
-              <Col></Col>
-            )}
-          </Row>
-        </Col>
-      </Row>
-      <Detail
-        show={detailShow}
-        onHide={handleCloseModal}
-        hero={detailData}
-      ></Detail>
-    </Container>
-  );
+  if (!isLogged) {
+    return (
+      <Route>{<Redirect to="/login" />}</Route>
+    );
+  } else {
+    return (
+      <Container className="container-equipo" fluid>
+        <Row xs={1} md={2} lg={2} xl={2}>
+          <Col md={4} lg={4} xl={4}>
+            <div>
+              <Card>
+                <Card.Header>
+                  <h2 className="text-center">Powerstats</h2>
+                </Card.Header>
+                <Card.Body>
+                  <ListGroup>
+                    {Object.keys(totalPowerstats).map((powerstat) => {
+                      return (
+                        <ListGroup.Item
+                          key={uuid()}
+                          variant="secondary"
+                          className="m-2"
+                        >
+                          {powerstat}{" "}
+                          <Badge style={{ backgroundColor: "#0d6efd" }}>
+                            {totalPowerstats[powerstat]}
+                          </Badge>
+                        </ListGroup.Item>
+                      );
+                    })}
+                  </ListGroup>
+                </Card.Body>
+              </Card>
+            </div>
+            <div className="my-2">
+              <SearchHero
+                addHero={handleAddHero}
+                // heroeDiscarted={}
+                teamFull={team.length >= heroesPerTeam}
+              ></SearchHero>
+            </div>
+          </Col>
+          <Col xs={12} md={8} lg={8} xl={8}>
+            <Row className="justify-content-center" xs={2} md={2} lg={3} xl={3}>
+              {team.length > 0 ? (
+                team.map((hero, index) => {
+                  return (
+                    <Heroe
+                      key={uuid()}
+                      listIndex={index}
+                      hero={hero}
+                      addHero={handleAddHero}
+                      deleteHero={handleDeleteHero}
+                      onClickDetail={handleOpenModal}
+                    />
+                  );
+                })
+              ) : (
+                <Col></Col>
+              )}
+            </Row>
+          </Col>
+        </Row>
+        <Detail
+          show={detailShow}
+          onHide={handleCloseModal}
+          hero={detailData}
+        ></Detail>
+      </Container>
+    );
+  }
 };
 export default Equipo;

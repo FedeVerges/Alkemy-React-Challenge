@@ -2,23 +2,29 @@ import axios from "axios";
 
 const URL_SEARCH =
   "https://cors-anywhere.herokuapp.com/https://superheroapi.com/api/10216611231546944/search/";
+const URL_LOGIN = "http://challenge-react.alkemy.org/";
 
-export async function login(email, password, URL) {
+export async function login(email, password) {
   return axios
-    .post(URL, {
+    .post(URL_LOGIN, {
       email: email,
       password: password,
     })
     .then((response) => {
-      const { token = "0" } = response.data;
-      console.log(token);
+      const { token = "" } = response.data;
       return token;
-      // guardar cookie en localstorage.
     })
     .catch((error) => {
-      alert("Ha ocurrido un error: " + error);
-      console.log(error);
-      return "";
+      if (error.response) {
+        throw new Error({ name: "Login Error", message: error.message });
+      }
+      if (error.request) {
+        throw new Error({
+          name: "Login Request Error",
+          message: error.message,
+        });
+      }
+      throw new Error({ name: "Another Login Error", message: error.message });
     });
 }
 
@@ -28,7 +34,7 @@ export async function searchHeroes(name) {
     .then((response) => {
       console.log("response", response);
       const heroes = response.data.results;
-      return heroes? heroes :[];
+      return heroes ? heroes : [];
       // guardar cookie en localstorage.
     })
     .catch((error) => {
@@ -37,7 +43,3 @@ export async function searchHeroes(name) {
       return "";
     });
 }
-
-// export function logout() {
-
-// }

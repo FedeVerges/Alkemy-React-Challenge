@@ -1,16 +1,17 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect} from 'react';
 import SignupForm from './componentes/Form.js';
 import Equipo from './pages/Equipo.js';
 import Error from './pages/Error.js';
 import NavigationBar from './componentes/NavBar.jsx';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { UserContextProvider } from './context/UserContext';
+import useUser from './hooks/useUser';
 
 function App() {
-  // const [islogged, setIsLogged] = useState(false);
-
   return (
     <div className="App">
+      <UserContextProvider>
       <Router>
         <header>
           <NavigationBar className="App-Header" />
@@ -26,6 +27,7 @@ function App() {
         </Switch>
         </main>
       </Router>
+      </UserContextProvider>
     </div>
   );
 }
