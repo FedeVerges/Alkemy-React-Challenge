@@ -38,7 +38,6 @@ export async function searchHeroes(name) {
       // guardar cookie en localstorage.
     })
     .catch((error) => {
-      alert("Ha ocurrido un error: " + error);
       console.log(error);
       return "";
     });

@@ -50,7 +50,7 @@ const Equipo = () => {
       id: data.id,
       name: data.name,
       powerstats: data.powerstats,
-      alignment: data.alignment,
+      biography: data.biography,
       appearance: data.appearance,
       work: data.work,
       connections: data.connections,

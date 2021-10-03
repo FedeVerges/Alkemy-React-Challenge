@@ -29,11 +29,6 @@ const newHero = {
 };
 const SearchHero = (props) => {
   const [heroes, setHeroes] = useState([
-    newHero,
-    newHero,
-    newHero,
-    newHero,
-    newHero,
   ]);
   const [loading, setLoading] = useState(false);
 

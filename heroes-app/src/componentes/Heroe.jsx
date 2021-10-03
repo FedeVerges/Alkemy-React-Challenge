@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { Card, Button, Row, Col, Container, Badge } from "react-bootstrap";
 
 const Heroe = ({ listIndex, hero, addHero,deleteHero, onClickDetail }) => {
-  const { id, name, powerstats, alignment, image } = hero;
+  const { id, name, powerstats, biography, image } = hero;
   const handleDeleteHero = () => {
     deleteHero(listIndex);
   };
@@ -20,7 +20,9 @@ const Heroe = ({ listIndex, hero, addHero,deleteHero, onClickDetail }) => {
         intelligence2: "100",
         strength2: "26",
       },
-      alignment: "good",
+      biography: {
+        alignment: "good",
+      },
       appearance: {
         gender: "Male",
         race: "Human",
@@ -43,7 +45,7 @@ const Heroe = ({ listIndex, hero, addHero,deleteHero, onClickDetail }) => {
   if (id !== -1 && id !== null) {
     return (
       <div className="py-2">
-        <Card bg={alignment === "good" ? "primary" : "danger"}>
+        <Card bg={biography?.alignment === "good" ? "primary" : "danger"}>
           <Card.Body className="p-0">
             <div className="p-0">
               <Card.Text className="text-center">
@@ -71,6 +73,7 @@ const Heroe = ({ listIndex, hero, addHero,deleteHero, onClickDetail }) => {
                       <Col key={uuid()} className="d-grid">
                         <Button size="sm" variant="outline-primary" disabled>
                           {value}
+                          <br></br>
                           <Badge style={{ backgroundColor: "#0d6efd" }}>
                             {powerstats[value]}
                           </Badge>
