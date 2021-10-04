@@ -31,3 +31,8 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## CORS problem
+Because the project is hosted on localhost, it has CORS problem to connect with the API to search heroes.
+To solve CORS problems with the search. Please go to [https://cors-anywhere.herokuapp.com/corsdemo] and activate the cors service.
+
