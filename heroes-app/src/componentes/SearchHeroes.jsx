@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Card, Container } from "react-bootstrap";
+import { FormControl, Card, Container, InputGroup } from "react-bootstrap";
 import { SearchResults } from "./SearchResults";
 import { searchHeroes } from "../services/alkemy_api";
 
@@ -35,7 +35,7 @@ const SearchHero = (props) => {
   const handleChange = (e) => {
     e.preventDefault();
     let name = e.target.value;
-    if (name !== "" && name && name.length >= 5) {
+    if (name !== "" && name && name.length >= 3) {
       setLoading(true);
       searchHeroes(name).then((results) => {
         setLoading(false);
@@ -47,13 +47,21 @@ const SearchHero = (props) => {
     }
   };
   const handleHeroeResults = (listResults) => {
-    console.log(listResults);
     setHeroes(listResults);
   }
   return (
     <Card className="overflow-auto" style={{ maxHeight: "40rem" }}>
       <Container className="my-2">
-        <Form>
+        <InputGroup className="mb-3">
+          <InputGroup.Text id="inputGroup-sizing-default">
+            Buscar
+          </InputGroup.Text>
+          <FormControl
+            placeholder="Ingresa el nombre de tu heroe"
+            onChange={handleChange}
+          />
+        </InputGroup>
+        {/* <Form>
           <Form.Group className="mb-3">
             <Form.Control
               placeholder="Ingresa el nombre de tu heroe"
@@ -63,8 +71,13 @@ const SearchHero = (props) => {
               {loading ? "Cargando..." : ""}
             </Form.Text>
           </Form.Group>
-        </Form>
-        <SearchResults addHero={props.addHero} teamFull={props.teamFull} results={heroes} removeHeroResult={handleHeroeResults}></SearchResults>
+        </Form> */}
+        <SearchResults
+          addHero={props.addHero}
+          teamFull={props.teamFull}
+          results={heroes}
+          removeHeroResult={handleHeroeResults}
+        ></SearchResults>
       </Container>
     </Card>
   );

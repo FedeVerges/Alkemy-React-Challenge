@@ -35,10 +35,12 @@ export async function searchHeroes(name) {
       console.log("response", response);
       const heroes = response.data.results;
       return heroes ? heroes : [];
-      // guardar cookie en localstorage.
     })
     .catch((error) => {
+       if (error.response) {
+         throw new Error({ name: "Login Error", message: error.message });
+       }
       console.log(error);
-      return "";
+      return [];
     });
 }
