@@ -6,7 +6,6 @@ export const SearchResults = (props) => {
   const handleAddHero = (hero, e) => {
     props.addHero(hero);
     // console.log(props.results);
-    console.log(hero.id);
     const newResults = props.results.filter((result) => { console.log(result.id); return result.id !== hero.id});
     props.removeHeroResult(newResults);
   };

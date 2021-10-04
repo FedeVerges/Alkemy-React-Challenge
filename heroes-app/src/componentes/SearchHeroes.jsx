@@ -28,8 +28,7 @@ const newHero = {
   },
 };
 const SearchHero = (props) => {
-  const [heroes, setHeroes] = useState([
-  ]);
+  const [heroes, setHeroes] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -39,8 +38,8 @@ const SearchHero = (props) => {
       setLoading(true);
       searchHeroes(name).then((results) => {
         setLoading(false);
-        console.log(results);
         if (results.length > 0) {
+          console.log('results', results);
           setHeroes(results);
         }
       });
@@ -48,7 +47,7 @@ const SearchHero = (props) => {
   };
   const handleHeroeResults = (listResults) => {
     setHeroes(listResults);
-  }
+  };
   return (
     <Card className="overflow-auto" style={{ maxHeight: "40rem" }}>
       <Container className="my-2">
@@ -61,17 +60,6 @@ const SearchHero = (props) => {
             onChange={handleChange}
           />
         </InputGroup>
-        {/* <Form>
-          <Form.Group className="mb-3">
-            <Form.Control
-              placeholder="Ingresa el nombre de tu heroe"
-              onChange={handleChange}
-            />
-            <Form.Text className="text-muted">
-              {loading ? "Cargando..." : ""}
-            </Form.Text>
-          </Form.Group>
-        </Form> */}
         <SearchResults
           addHero={props.addHero}
           teamFull={props.teamFull}

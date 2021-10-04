@@ -5,7 +5,7 @@ import SearchHero from "../componentes/SearchHeroes.jsx";
 import { v4 as uuid } from "uuid";
 import { Card, Col, Row, Container, Badge, ListGroup } from "react-bootstrap";
 import useUser from "../hooks/useUser.js";
-import { BrowserRouter as Router, Route,Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 // Posee una lista de 6 heores, 3 buenos y 3 malos.
 const heroesPerTeam = 6;
@@ -46,6 +46,7 @@ const Equipo = () => {
   };
 
   const handleAddHero = (data) => {
+    console.log('data', data);
     const hero = {
       id: data.id,
       name: data.name,
@@ -56,6 +57,7 @@ const Equipo = () => {
       connections: data.connections,
       image: data.image,
     };
+    console.log(hero);
     if (team.length < 7) {
       let newTeam = [...team, hero];
       setTeam(newTeam);
@@ -89,8 +91,12 @@ const Equipo = () => {
         if (powerstats.length > 0) {
           powerstats.map((key) => {
             return newTotalPowerstats[key] == null
-              ? (newTotalPowerstats[key] = parseInt(heroe.powerstats[key]))
-              : (newTotalPowerstats[key] += parseInt(heroe.powerstats[key]));
+              ? (newTotalPowerstats[key] = parseInt(
+                  heroe.powerstats[key] == null ? 0 : heroe.powerstats[key]
+                ))
+              : (newTotalPowerstats[key] += parseInt(
+                  heroe.powerstats[key] == null ? 0 : heroe.powerstats[key]
+                ));
           });
         }
       });
@@ -100,9 +106,7 @@ const Equipo = () => {
   }, [team]);
 
   if (!isLogged) {
-    return (
-      <Route>{<Redirect to="/login" />}</Route>
-    );
+    return <Route>{<Redirect to="/login" />}</Route>;
   } else {
     return (
       <Container className="container-equipo" fluid>
@@ -137,7 +141,7 @@ const Equipo = () => {
               <SearchHero
                 addHero={handleAddHero}
                 // heroeDiscarted={}
-                teamFull={team.length >= heroesPerTeam}
+                teamFull={team.length === heroesPerTeam}
               ></SearchHero>
             </div>
           </Col>

@@ -37,10 +37,9 @@ export async function searchHeroes(name) {
       return heroes ? heroes : [];
     })
     .catch((error) => {
-       if (error.response) {
-         throw new Error({ name: "Login Error", message: error.message });
-       }
-      console.log(error);
+      if (error.response) {
+        alert("Error: Ha ocurrido un error con el buscador");
+      }
       return [];
     });
 }
